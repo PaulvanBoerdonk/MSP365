@@ -25,7 +25,7 @@ Function New-Manifest {
             FunctionsToExport    = 'Get-All', 'Get-Info', 'Get-Full', 'Start-Application', 'Get-ModuleAliases', 'Invoke-Show'
             Path                 = "$savepath\MSP365.psd1"
             Author               = "Paul van Boerdonk"
-            Description          = "Master module for a collection of modules. These modules are varied in their tasks. The overall purpose of them being to provide a powerfull Toolset to improve IT Admin workflows."
+            Description          = "Module that installs all other modules and provides a central point for all functions"
             IconUri              = 'https://raw.githubusercontent.com/PaulvanBoerdonk/MSP365/master/images/MSP365.png'
             LicenseUri           = 'https://github.com/PaulvanBoerdonk/MSP365/blob/master/LICENSE.txt'
             ModuleVersion        = "$script:MSP365GithubVersion"
