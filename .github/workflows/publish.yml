@@ -17,10 +17,11 @@ jobs:
           PS_GALLERY_KEY: ${{ secrets.PS_GALLERY_KEY }}
         shell: pwsh
         run: |
-          # Attempt to resolve future nuget issues observed on 2023/03/15
-          # Invoke-WebRequest -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile "$env:LOCALAPPDATA\Microsoft\Windows\PowerShell\PowerShellGet\NuGet.exe"
+          #Install Required Modules
           Install-module powershellget -force -Allowclobber
           Import-Module powershellget
+          Install-Module -Name PartnerCenter -Force -AllowClobber
+          Import-Module PartnerCenter
 
           #Import and Run Scripts
           $workingdirectory = (Get-Location).path
