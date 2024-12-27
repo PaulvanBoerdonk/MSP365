@@ -15,34 +15,7 @@ Function New-Manifest {
     $step = Get-Content "$workingdirectory/modules/MSP365.Reporting/ChangeLog.md" | Select-Object -Last 1; $step2 = $step.trimstart('- **'); $step3 = ($step2).split('*'); $script:ReportingGithubVersion = $step3 | Select-Object -First 1
     $step = Get-Content "$workingdirectory/modules/MSP365.SAM/ChangeLog.md" | Select-Object -Last 1; $step2 = $step.trimstart('- **'); $step3 = ($step2).split('*'); $script:SAMGithubVersion = $step3 | Select-Object -First 1
  
-    if ($MSP365) {
-        ##Create Manifests
-        #MSP365
-        $savepath = "$workingdirectory\modules\MSP365"
-
-        $Params = @{
-            CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = 'Get-All', 'Get-Info', 'Get-Full', 'Start-Application', 'Get-ModuleAliases', 'Invoke-Show'
-            Path                 = "$savepath\MSP365.psd1"
-            Author               = "Paul van Boerdonk"
-            Description          = "Module that installs all other modules and provides a central point for all functions"
-            IconUri              = 'https://raw.githubusercontent.com/PaulvanBoerdonk/MSP365/master/images/MSP365.png'
-            LicenseUri           = 'https://github.com/PaulvanBoerdonk/MSP365/blob/master/LICENSE.txt'
-            ModuleVersion        = "$script:MSP365GithubVersion"
-            Powershellversion    = "7.1"
-            ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
-            RequiredModules      = (
-                @{ModuleName = 'MSP365.Reporting'; ModuleVersion = $script:ReportingGithubVersion; },
-                @{ModuleName = 'MSP365.SAM'; ModuleVersion = $script:SAMGithubVersion; }
-            )
-            RootModule           = "MSP365Manifest.psm1"
-            ReleaseNotes         = "The release notes can be found in the ChangeLog.md file at the scriptroot path."
-            Tags                 = '365', 'Reporting', 'Automate', 'Application', 'MSGraph', 'SAM'
-        }
-
-        New-ModuleManifest @Params
-    }
-
+    
     if ($Reporting) {
         #Reporting
         $savepath = "$workingdirectory\modules\MSP365.Reporting"
@@ -88,6 +61,37 @@ Function New-Manifest {
             RootModule           = "MSP365.SAMManifest.psm1"
             ReleaseNotes         = "Dependency module for the Module MSP365. Full ChangeLog contained in bundled ChangeLog.txt"
             Tags                 = 'SAM'
+        }
+
+        New-ModuleManifest @Params
+    }
+
+    # Sleep for 60 seconds to allow the manifest files to be created before the MSP365 module is created
+    Start-Sleep -Seconds 60
+
+    if ($MSP365) {
+        ##Create Manifests
+        #MSP365
+        $savepath = "$workingdirectory\modules\MSP365"
+
+        $Params = @{
+            CompatiblePSEditions = "Desktop", "Core"
+            FunctionsToExport    = 'Get-All', 'Get-Info', 'Get-Full', 'Start-Application', 'Get-ModuleAliases', 'Invoke-Show'
+            Path                 = "$savepath\MSP365.psd1"
+            Author               = "Paul van Boerdonk"
+            Description          = "Module that installs all other modules and provides a central point for all functions"
+            IconUri              = 'https://raw.githubusercontent.com/PaulvanBoerdonk/MSP365/master/images/MSP365.png'
+            LicenseUri           = 'https://github.com/PaulvanBoerdonk/MSP365/blob/master/LICENSE.txt'
+            ModuleVersion        = "$script:MSP365GithubVersion"
+            Powershellversion    = "7.1"
+            ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
+            RequiredModules      = (
+                @{ModuleName = 'MSP365.Reporting'; ModuleVersion = $script:ReportingGithubVersion; },
+                @{ModuleName = 'MSP365.SAM'; ModuleVersion = $script:SAMGithubVersion; }
+            )
+            RootModule           = "MSP365Manifest.psm1"
+            ReleaseNotes         = "The release notes can be found in the ChangeLog.md file at the scriptroot path."
+            Tags                 = '365', 'Reporting', 'Automate', 'Application', 'MSGraph', 'SAM'
         }
 
         New-ModuleManifest @Params
