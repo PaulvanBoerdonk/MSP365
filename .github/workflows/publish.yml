@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
       - name: Install Required Modules, Update Manifests, Publish updated Modules, and commit manifest changes
@@ -18,7 +18,7 @@ jobs:
         shell: pwsh
         run: |
           # Attempt to resolve future nuget issues observed on 2023/03/15
-          Invoke-WebRequest -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile "$env:LOCALAPPDATA\Microsoft\Windows\PowerShell\PowerShellGet\NuGet.exe"
+          # Invoke-WebRequest -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile "$env:LOCALAPPDATA\Microsoft\Windows\PowerShell\PowerShellGet\NuGet.exe"
           Install-module powershellget -force -Allowclobber
           Import-Module powershellget
 
