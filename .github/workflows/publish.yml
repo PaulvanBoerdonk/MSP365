@@ -1,1 +1,36 @@
-name: Publish to Powershell Gallery
+# YML file that uploads the powershell module to the PowerShell Gallery
+
+name: Publish Module to PowerShell Gallery
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Required Modules, Update Manifests, Publish updated Modules, and commit manifest changes
+        env:
+          NUGET_KEY: ${{ secrets.PS_GALLERY_KEY }}
+        shell: pwsh
+        run: |
+          # Attempt to resolve future nuget issues observed on 2023/03/15
+          Invoke-WebRequest -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile "$env:LOCALAPPDATA\Microsoft\Windows\PowerShell\PowerShellGet\NuGet.exe"
+          Install-module powershellget -force -Allowclobber
+          Import-Module powershellget
+
+          #Import and Run Scripts
+          $workingdirectory = (Get-Location).path
+          . "$workingdirectory\.github\workflows\scripts\New-Manifest.ps1"
+          . "$workingdirectory\.github\workflows\scripts\Invoke-PublishModules.ps1"
+          Invoke-PublishModules
+
+          #Publish new manifest files to the repository
+          git config --global user.email "paul.boerdonk@icloud.com"
+          git config --global user.name "Paul van Boerdonk"
+          git add -A
+          git commit -m "rel: Manifest Update"
+          git push -u origin main
