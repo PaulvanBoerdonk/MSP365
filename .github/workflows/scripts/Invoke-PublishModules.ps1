@@ -15,8 +15,6 @@ function Invoke-PublishModules {
         }
     }
 
-    $workingdirectory = "your_working_directory_here" # Define your working directory
-
     $Reporting = Publish-IfNewer "MSP365.Reporting" "$workingdirectory/modules/MSP365.Reporting"
     $SAM = Publish-IfNewer "MSP365.SAM" "$workingdirectory/modules/MSP365.SAM"
 
