@@ -5,20 +5,19 @@ function New-Manifest {
         [Parameter(Mandatory = $false)][Switch]$SAM
     )
 
-    $step = Get-Content "$workingdirectory/modules/MSP365/ChangeLog.md" | Select-Object -Last 1
-    $step2 = $step.trimstart('- **')
-    $step3 = ($step2).split('*')
-    $script:MSP365GithubVersion = $step3 | Select-Object -First 1
-
-    $step = Get-Content "$workingdirectory/modules/MSP365.Reporting/ChangeLog.md" | Select-Object -Last 1
-    $step2 = $step.trimstart('- **')
-    $step3 = ($step2).split('*')
-    $script:ReportingGithubVersion = $step3 | Select-Object -First 1
-
-    $step = Get-Content "$workingdirectory/modules/MSP365.SAM/ChangeLog.md" | Select-Object -Last 1
-    $step2 = $step.trimstart('- **')
-    $step3 = ($step2).split('*')
-    $script:SAMGithubVersion = $step3 | Select-Object -First 1
+    function Get-GithubVersion {
+        param (
+            [string]$changelogPath
+        )
+        $lastLine = Get-Content $changelogPath | Select-Object -Last 1
+        $trimmedLine = $lastLine.trimstart('- **')
+        $versionParts = ($trimmedLine).split('*')
+        return $versionParts | Select-Object -First 1
+    }
+    
+    $script:MSP365GithubVersion = Get-GithubVersion "$workingdirectory/modules/MSP365/ChangeLog.md"
+    $script:ReportingGithubVersion = Get-GithubVersion "$workingdirectory/modules/MSP365.Reporting/ChangeLog.md"
+    $script:SAMGithubVersion = Get-GithubVersion "$workingdirectory/modules/MSP365.SAM/ChangeLog.md"
 
     if ($Reporting) {
         $savepath = "$workingdirectory\modules\MSP365.Reporting"

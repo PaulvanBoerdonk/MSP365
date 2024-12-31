@@ -13,3 +13,4 @@
 - **1.0.10** Version bump
 - **1.0.11** Version bump
 - **1.0.12** Version bump
+- **1.0.13** Version bump
