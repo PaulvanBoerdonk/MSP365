@@ -12,13 +12,13 @@
 RootModule = 'MSP365Manifest.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.8'
+ModuleVersion = '1.0.10'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
 
 # ID used to uniquely identify this module
-GUID = 'db555666-4d16-424f-ab55-fee8aa575ac4'
+GUID = '2666af00-b939-4623-8fd6-04f84ce95bfb'
 
 # Author of this module
 Author = 'Paul van Boerdonk'
@@ -51,8 +51,8 @@ PowerShellVersion = '7.1'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @(@{ModuleName = 'MSP365.Reporting'; ModuleVersion = '1.0.7'; }, 
-               @{ModuleName = 'MSP365.SAM'; ModuleVersion = '1.0.7'; })
+RequiredModules = @(@{ModuleName = 'MSP365.Reporting'; ModuleVersion = '1.0.9'; }, 
+               @{ModuleName = 'MSP365.SAM'; ModuleVersion = '1.0.9'; })
 
 # Assemblies that must be loaded prior to importing this module
 # RequiredAssemblies = @()
