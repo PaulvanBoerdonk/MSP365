@@ -83,7 +83,7 @@ function Publish-Modules {
 
     foreach ($module in $modules) {
         $PSGalleryVersion = (Find-Module $module.Name -Repository PSGallery).version
-        $step = Get-Content "$module.Path/ChangeLog.md" | Select-Object -Last 1
+        $step = Get-Content "$($module.Path)/ChangeLog.md" | Select-Object -Last 1
         $step2 = $step.trimstart('- **')
         $step3 = ($step2).split('*')
         $GithubVersion = $step3 | Select-Object -First 1
