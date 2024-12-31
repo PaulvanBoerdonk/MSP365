@@ -8,3 +8,4 @@
 - **1.0.5** Version bump
 - **1.0.6** Version bump
 - **1.0.7** Version bump
+- **1.0.8** Version bump
