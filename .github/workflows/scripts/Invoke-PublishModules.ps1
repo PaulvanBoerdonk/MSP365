@@ -1,42 +1,38 @@
 function Invoke-PublishModules {
     $ErrorActionPreference = 'Stop'
 
-    #Reporting
-    $ReportingPSGallery = (Find-Module "MSP365.Reporting" -Repository PSGallery).version
-    $step = Get-Content "$workingdirectory/modules/MSP365.Reporting/ChangeLog.md" | Select-Object -Last 1; $step2 = $step.trimstart('- **'); $step3 = ($step2).split('*'); $ReportingGithub = $step3 | Select-Object -First 1
-    if ([version]$ReportingGithub -gt [version]$ReportingPSGallery ) {
-        New-Manifest -Reporting #Generate each modules manifest files
-        Publish-Module -Path "$workingdirectory/modules/MSP365.Reporting" -NuGetApiKey $env:PS_GALLERY_KEY
-        $Reporting = Write-Output "[+] MSP365.Reporting published to PSGallery"
-    }
-    else {
-        $Reporting = Write-Output "[-] MSP365.Reporting not published"
-    }
-
-    #SAM
-    $SAMPSGallery = (Find-Module "MSP365.SAM" -Repository PSGallery).version
-    $step = Get-Content "$workingdirectory/modules/MSP365.SAM/ChangeLog.md" | Select-Object -Last 1; $step2 = $step.trimstart('- **'); $step3 = ($step2).split('*'); $SAMGithub = $step3 | Select-Object -First 1
-    if ([version]$SAMGithub -gt [version]$SAMPSGallery ) {
-        New-Manifest -SAM #Generate each modules manifest files
-        Publish-Module -Path "$workingdirectory/modules/MSP365.SAM" -NuGetApiKey $env:PS_GALLERY_KEY
-        $SAM = Write-Output "[+] MSP365.SAM published to PSGallery"
-    }
-    else {
-        $SAM = Write-Output "[-] MSP365.SAM not published"
+    function Publish-IfNewer($moduleName, $modulePath) {
+        $psGalleryVersion = (Find-Module $moduleName -Repository PSGallery).version
+        $githubVersion = (Get-Content "$modulePath/ChangeLog.md" | Select-Object -Last 1).TrimStart('- **').Split('*')[0]
+        
+        if ([version]$githubVersion -gt [version]$psGalleryVersion) {
+            New-Manifest -$moduleName # Generate each module's manifest files
+            Publish-Module -Path $modulePath -NuGetApiKey $env:PS_GALLERY_KEY
+            Write-Output "$moduleName published to PSGallery"
+        }
+        else {
+            Write-Output "$moduleName not published"
+        }
     }
 
-    #MSP365
+    $workingdirectory = "your_working_directory_here" # Define your working directory
+
+    $Reporting = Publish-IfNewer "MSP365.Reporting" "$workingdirectory/modules/MSP365.Reporting"
+    $SAM = Publish-IfNewer "MSP365.SAM" "$workingdirectory/modules/MSP365.SAM"
+
     $MSP365PSGallery = (Find-Module MSP365 -Repository PSGallery).version
-    $step = Get-Content "$workingdirectory/modules/MSP365/ChangeLog.md" | Select-Object -Last 1; $step2 = $step.trimstart('- **'); $step3 = ($step2).split('*'); $MSP365Github = $step3 | Select-Object -First 1
-    if ([version]$MSP365Github -gt [version]$MSP365PSGallery ) {
-        New-Manifest -MSP365 #Generate each modules manifest files
-        Copy-Item $workingdirectory/modules/MSP365.Reporting -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Reporting -Force -Global
-        Copy-Item $workingdirectory/modules/MSP365.SAM -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.SAM -Force -Global
+    $MSP365Github = (Get-Content "$workingdirectory/modules/MSP365/ChangeLog.md" | Select-Object -Last 1).TrimStart('- **').Split('*')[0]
+    if ([version]$MSP365Github -gt [version]$MSP365PSGallery) {
+        New-Manifest -MSP365 # Generate each module's manifest files
+        Copy-Item "$workingdirectory/modules/MSP365.Reporting" -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse
+        Import-Module "$workingdirectory/modules/MSP365.Reporting" -Force -Global
+        Copy-Item "$workingdirectory/modules/MSP365.SAM" -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse
+        Import-Module "$workingdirectory/modules/MSP365.SAM" -Force -Global
         Publish-Module -Path "$workingdirectory/modules/MSP365" -NuGetApiKey $env:PS_GALLERY_KEY
-        $MSP365 = Write-Output "[+] MSP365 published to PSGallery"
+        $MSP365 = Write-Output "MSP365 published to PSGallery"
     }
     else {
-        $MSP365 = Write-Output "[-] MSP365 not published"
+        $MSP365 = Write-Output "MSP365 not published"
     }
 
     $Reporting

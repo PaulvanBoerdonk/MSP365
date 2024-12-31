@@ -18,13 +18,11 @@ jobs:
         shell: pwsh
         run: |
           #Install Required Modules
-          Install-module powershellget -force -Allowclobber
-          Import-Module powershellget
-          Install-Module -Name PartnerCenter -Force -AllowClobber
-          Import-Module PartnerCenter
+          Install-Module -Name PowerShellGet, PartnerCenter -Force -AllowClobber
+          Import-Module PowerShellGet, PartnerCenter
 
           #Import and Run Scripts
-          $workingdirectory = (Get-Location).path
+          $workingdirectory = (Get-Location).Path
           . "$workingdirectory\.github\workflows\scripts\New-Manifest.ps1"
           . "$workingdirectory\.github\workflows\scripts\Invoke-PublishModules.ps1"
           Invoke-PublishModules
@@ -33,5 +31,5 @@ jobs:
           git config --global user.email "paul.boerdonk@icloud.com"
           git config --global user.name "Paul van Boerdonk"
           git add -A
-          git commit -m "rel: Manifest Update"
+          git commit -m "Updated module manifest files"
           git push -u origin main
