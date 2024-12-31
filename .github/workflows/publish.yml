@@ -27,7 +27,7 @@ jobs:
           $workingdirectory = (Get-Location).path
           . "$workingdirectory\.github\workflows\scripts\Generate-Manifest.ps1"
           . "$workingdirectory\.github\workflows\scripts\Publish-Modules.ps1"
-          Invoke-PublishModules
+          Publish-Modules
 
           #Publish new manifest files to the repository
           git config --global user.email "paul.boerdonk@icloud.com"
