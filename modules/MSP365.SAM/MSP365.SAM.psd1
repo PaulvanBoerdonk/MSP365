@@ -12,13 +12,13 @@
 RootModule = 'MSP365.SAMManifest.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.7'
+ModuleVersion = '1.0.9'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
 
 # ID used to uniquely identify this module
-GUID = '1f56a661-2987-4b58-9308-9cf1e2246119'
+GUID = 'b7d97962-6c55-4fd6-9e9c-047c7d86ea74'
 
 # Author of this module
 Author = 'Paul van Boerdonk'
