@@ -89,7 +89,7 @@ function Publish-Modules {
         $GithubVersion = $step3 | Select-Object -First 1
 
         if ([version]$GithubVersion -gt [version]$PSGalleryVersion) {
-            New-Manifest $module.ManifestSwitch
+            New-Manifest $($module).ManifestSwitch
             Publish-Module -Path $module.Path -NuGetApiKey $env:PS_GALLERY_KEY
             Write-Output "[+] $($module.Name) published to PSGallery"
         }
