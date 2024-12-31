@@ -5,3 +5,4 @@
 - **1.0.2** Version bump
 - **1.0.3** Version bump
 - **1.0.4** Version bump
+- **1.0.5** Version bump
