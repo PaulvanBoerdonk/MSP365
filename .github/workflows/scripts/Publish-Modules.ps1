@@ -82,6 +82,9 @@ function Publish-Modules {
     )
 
     foreach ($module in $modules) {
+        if ($module.ManifestSwitch -eq "-MSP365") {
+            Start-Sleep -Seconds 30
+        }
         $PSGalleryVersion = (Find-Module $module.Name -Repository PSGallery).version
         $step = Get-Content "$($module.Path)/ChangeLog.md" | Select-Object -Last 1
         $step2 = $step.trimstart('- **')

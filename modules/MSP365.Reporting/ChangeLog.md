@@ -10,3 +10,4 @@
 - **1.0.7** Version bump
 - **1.0.8** Version bump
 - **1.0.9** Version bump
+- **1.0.10** Version bump
