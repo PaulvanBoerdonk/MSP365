@@ -69,8 +69,8 @@ function New-Manifest {
             Powershellversion    = "7.1"
             ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
             RequiredModules      = (
-                @{ ModuleName = "MSP365.Reporting"; ModuleVersion = $script:ReportingGithubVersion },
-                @{ ModuleName = "MSP365.SAM"; ModuleVersion = $script:SAMGithubVersion }
+                @{ ModuleName = "MSP365.Reporting"; ModuleVersion = $script:ReportingGithubVersion; },
+                @{ ModuleName = "MSP365.SAM"; ModuleVersion = $script:SAMGithubVersion; }
             )
             RootModule           = "MSP365Manifest.psm1"
         }
