@@ -89,11 +89,8 @@ function Publish-Modules {
 
     foreach ($module in $modules) {
         if ($module.ManifestSwitch -eq "-MSP365") {
-            #temp troubleshooting
-            $filePath = "$workingdirectory/modules/MSP365/MSP365.psd1"
-            $content = Get-Content -Path $filePath
-            Write-Output $content
-            #end temp troubleshooting
+            Copy-Item $workingdirectory/modules/MSP365.Reporting -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Reporting/MSP365.ReportingManifest.psm1 -Force -Global
+            Copy-Item $workingdirectory/modules/MSP365.SAM -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.SAM/MSP365.SAMManifest.psm1 -Force -Global
             Start-Sleep -Seconds 30
         }
         $PSGalleryVersion = (Find-Module $module.Name -Repository PSGallery).version
