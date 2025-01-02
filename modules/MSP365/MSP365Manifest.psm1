@@ -1,23 +1,29 @@
 ##Import Functions
-$FunctionPathPublic = $PSScriptRoot + "\Public\"
-$FunctionPathPrivate = $PSScriptRoot + "\Private\"
+if ($PSScriptRoot -eq $null) {
+    $CurrentLocation = $(Get-Location).Path
+}
+else {
+    $CurrentLocation = $PSScriptRoot
+}
+$FunctionPathPublic = $CurrentLocation + "\Public\"
+$FunctionPathPrivate = $CurrentLocation + "\Private\"
 
-# try {
+try {
     
-if (Test-Path $FunctionPathPublic) {
-    $PublicFunctions = Get-ChildItem $FunctionPathPublic | ForEach-Object {
-        [System.IO.File]::ReadAllText($_.FullName, [Text.Encoding]::UTF8) + [Environment]::NewLine
+    if (Test-Path $FunctionPathPublic) {
+        $PublicFunctions = Get-ChildItem $FunctionPathPublic | ForEach-Object {
+            [System.IO.File]::ReadAllText($_.FullName, [Text.Encoding]::UTF8) + [Environment]::NewLine
+        }
     }
-}
-if (Test-Path $FunctionPathPrivate) {
-    $PrivateFunctions = Get-ChildItem $FunctionPathPrivate | ForEach-Object {
-        [System.IO.File]::ReadAllText($_.FullName, [Text.Encoding]::UTF8) + [Environment]::NewLine
+    if (Test-Path $FunctionPathPrivate) {
+        $PrivateFunctions = Get-ChildItem $FunctionPathPrivate | ForEach-Object {
+            [System.IO.File]::ReadAllText($_.FullName, [Text.Encoding]::UTF8) + [Environment]::NewLine
+        }
     }
-}
 
-. ([scriptblock]::Create($PublicFunctions))
-. ([scriptblock]::Create($PrivateFunctions))
-<# }
+    . ([scriptblock]::Create($PublicFunctions))
+    . ([scriptblock]::Create($PrivateFunctions))
+}
 
 catch {
     $FunctionListPublic = Get-ChildItem $FunctionPathPublic -Name
@@ -31,5 +37,3 @@ catch {
         . ($FunctionPathPrivate + $Function)
     }
 }
-
-#>

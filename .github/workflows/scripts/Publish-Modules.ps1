@@ -23,7 +23,7 @@ function New-Manifest {
         $savepath = "$workingdirectory\modules\MSP365.Reporting"
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = 'Get-M365Users'
+            FunctionsToExport    = 'Get-M365Report'
             Path                 = "$savepath\MSP365.Reporting.psd1"
             Author               = "Paul van Boerdonk"
             Description          = "Functions for Reporting Module"
@@ -40,7 +40,7 @@ function New-Manifest {
         $savepath = "$workingdirectory\modules\MSP365.SAM"
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = 'Get-SAMData'
+            FunctionsToExport    = 'Get-M365SAMStatus'
             Path                 = "$savepath\MSP365.SAM.psd1"
             Author               = "Paul van Boerdonk"
             Description          = "Functions for SAM Module"
@@ -57,7 +57,7 @@ function New-Manifest {
         $savepath = "$workingdirectory\modules\MSP365"
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = 'Get-MSP365Data'
+            FunctionsToExport    = ''
             Path                 = "$savepath\MSP365.psd1"
             Author               = "Paul van Boerdonk"
             Description          = "Functions for MSP365 Module"
