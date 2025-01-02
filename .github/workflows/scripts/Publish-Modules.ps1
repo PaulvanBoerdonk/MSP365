@@ -32,6 +32,7 @@ function New-Manifest {
             ModuleVersion        = "$script:ReportingGithubVersion"
             Powershellversion    = "7.1"
             ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
+            RootModule           = "MSP365.ReportingManifest.psm1"
         }
         New-ModuleManifest @Params
     }
@@ -49,6 +50,7 @@ function New-Manifest {
             ModuleVersion        = "$script:SAMGithubVersion"
             Powershellversion    = "7.1"
             ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
+            RootModule           = "MSP365.SAMManifest.psm1"
         }
         New-ModuleManifest @Params
     }
@@ -57,7 +59,7 @@ function New-Manifest {
         $savepath = "$workingdirectory\modules\MSP365"
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = ''
+            FunctionsToExport    = 'Get-M365Commands'
             Path                 = "$savepath\MSP365.psd1"
             Author               = "Paul van Boerdonk"
             Description          = "Functions for MSP365 Module"
@@ -66,6 +68,11 @@ function New-Manifest {
             ModuleVersion        = "$script:MSP365GithubVersion"
             Powershellversion    = "7.1"
             ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
+            RequiredModules      = (
+                @{ ModuleName = "MSP365.Reporting"; ModuleVersion = "$script:ReportingGithubVersion" },
+                @{ ModuleName = "MSP365.SAM"; ModuleVersion = "$script:SAMGithubVersion" }
+            )
+            RootModule           = "MSP365Manifest.psm1"
         }
         New-ModuleManifest @Params
     }
