@@ -89,6 +89,11 @@ function Publish-Modules {
 
     foreach ($module in $modules) {
         if ($module.ManifestSwitch -eq "-MSP365") {
+            #temp troubleshooting
+            $filePath = "$workingdirectory/modules/MSP365/MSP365.psd1"
+            $content = Get-Content -Path $filePath
+            Write-Output $content
+            #end temp troubleshooting
             Start-Sleep -Seconds 30
         }
         $PSGalleryVersion = (Find-Module $module.Name -Repository PSGallery).version
