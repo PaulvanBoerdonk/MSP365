@@ -79,7 +79,7 @@ function New-Manifest {
         $savepath = "$workingdirectory\modules\MSP365"
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = 'Get-M365Commands'
+            FunctionsToExport    = 'Get-MSPCommand', 'Update-MSPModule'
             Path                 = "$savepath\MSP365.psd1"
             Author               = "Paul van Boerdonk"
             Description          = "Functions for MSP365 Module"
@@ -114,7 +114,7 @@ function Publish-Modules {
             Copy-Item $workingdirectory/modules/MSP365.Authentication -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Authentication/MSP365.Authentication.psm1 -Force -Global
             Copy-Item $workingdirectory/modules/MSP365.Reporting -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Reporting/MSP365.Reporting.psm1 -Force -Global
             Copy-Item $workingdirectory/modules/MSP365.SAM -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.SAM/MSP365.SAM.psm1 -Force -Global
-            Start-Sleep -Seconds 30
+            Start-Sleep -Seconds 3
         }
         $PSGalleryVersion = (Find-Module $module.Name -Repository PSGallery).version
         $step = Get-Content "$($module.Path)/ChangeLog.md" | Select-Object -Last 1
