@@ -32,7 +32,7 @@ function New-Manifest {
             ModuleVersion        = "$script:ReportingGithubVersion"
             Powershellversion    = "7.1"
             ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
-            RootModule           = "MSP365.ReportingManifest.psm1"
+            RootModule           = "MSP365.Reporting.psm1"
         }
         New-ModuleManifest @Params
     }
@@ -50,7 +50,7 @@ function New-Manifest {
             ModuleVersion        = "$script:SAMGithubVersion"
             Powershellversion    = "7.1"
             ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
-            RootModule           = "MSP365.SAMManifest.psm1"
+            RootModule           = "MSP365.SAM.psm1"
         }
         New-ModuleManifest @Params
     }
@@ -72,7 +72,7 @@ function New-Manifest {
                 @{ ModuleName = "MSP365.Reporting"; ModuleVersion = $script:ReportingGithubVersion; },
                 @{ ModuleName = "MSP365.SAM"; ModuleVersion = $script:SAMGithubVersion; }
             )
-            RootModule           = "MSP365Manifest.psm1"
+            RootModule           = "MSP365.psm1"
         }
         New-ModuleManifest @Params
     }
@@ -89,8 +89,8 @@ function Publish-Modules {
 
     foreach ($module in $modules) {
         if ($module.ManifestSwitch -eq "-MSP365") {
-            Copy-Item $workingdirectory/modules/MSP365.Reporting -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Reporting/MSP365.ReportingManifest.psm1 -Force -Global
-            Copy-Item $workingdirectory/modules/MSP365.SAM -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.SAM/MSP365.SAMManifest.psm1 -Force -Global
+            Copy-Item $workingdirectory/modules/MSP365.Reporting -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Reporting/MSP365.Reporting.psm1 -Force -Global
+            Copy-Item $workingdirectory/modules/MSP365.SAM -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.SAM/MSP365.SAM.psm1 -Force -Global
             Start-Sleep -Seconds 30
         }
         $PSGalleryVersion = (Find-Module $module.Name -Repository PSGallery).version

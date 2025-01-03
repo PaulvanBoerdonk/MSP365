@@ -6,27 +6,30 @@ on:
       - main
 
 jobs:
-  publish:
+  publish-module-to-powershell-gallery:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Required Modules, Update Manifests, Publish updated Modules, and commit manifest changes
-        env:
-          PS_GALLERY_KEY: ${{ secrets.PS_GALLERY_KEY }}
+      - name: Set up PowerShell
         shell: pwsh
         run: |
-          # Install Required Modules
           Install-Module -Name PowerShellGet, PartnerCenter -Force -AllowClobber
           Import-Module PowerShellGet, PartnerCenter
 
-          # Import and Run Combined Script
+      - name: Publish Module to PowerShell Gallery
+        shell: pwsh
+        run: |
           $workingdirectory = (Get-Location).Path
           . "$workingdirectory\.github\workflows\scripts\Publish-Modules.ps1"
           Publish-Modules
 
-          # Publish new manifest files to the repository
+      - name: Commit and push new files to GitHub
+        env:
+          PS_GALLERY_KEY: ${{ secrets.PS_GALLERY_KEY }}
+        shell: pwsh
+        run: |
           git config --global user.email "paul.boerdonk@icloud.com"
           git config --global user.name "Paul van Boerdonk"
           git add -A
-          git commit -m "Updated module manifest files"
+          git commit -m "Github Action: Publish Module to PowerShell Gallery"
           git push -u origin main
