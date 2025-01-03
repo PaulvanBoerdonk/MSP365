@@ -12,13 +12,13 @@
 RootModule = 'MSP365.Authentication.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.5'
+ModuleVersion = '1.0.6'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
 
 # ID used to uniquely identify this module
-GUID = 'a3976ec0-e5df-43c4-99de-c7a881f4eae1'
+GUID = '00455377-181b-4a4b-897a-e0ef70c67a49'
 
 # Author of this module
 Author = 'Paul van Boerdonk'
@@ -69,7 +69,7 @@ RequiredModules = @(@{ModuleName = 'Microsoft.Graph.Authentication'; ModuleVersi
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'New-AppSecret', 'Register-MSPPartnerApp'
+FunctionsToExport = 'New-MSPPartnerAppSecret', 'Register-MSPPartnerApp'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
