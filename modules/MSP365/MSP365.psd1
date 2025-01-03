@@ -12,13 +12,13 @@
 RootModule = 'MSP365.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.21'
+ModuleVersion = '1.0.22'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
 
 # ID used to uniquely identify this module
-GUID = 'da31d687-c1f5-484d-87a7-7fc94e1681d1'
+GUID = 'e187498b-05fd-44fa-bc0c-5bf61d368fd0'
 
 # Author of this module
 Author = 'Paul van Boerdonk'
@@ -51,7 +51,7 @@ PowerShellVersion = '7.1'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @(@{ModuleName = 'MSP365.Authentication'; ModuleVersion = '1.0.2'; }, 
+RequiredModules = @(@{ModuleName = 'MSP365.Authentication'; ModuleVersion = '1.0.3'; }, 
                @{ModuleName = 'MSP365.Reporting'; ModuleVersion = '1.0.19'; }, 
                @{ModuleName = 'MSP365.SAM'; ModuleVersion = '1.0.15'; })
 
