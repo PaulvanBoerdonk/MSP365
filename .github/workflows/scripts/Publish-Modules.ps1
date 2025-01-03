@@ -23,6 +23,9 @@ function New-Manifest {
 
     if ($Authentication) {
         $savepath = "$workingdirectory\modules\MSP365.Authentication"
+        $PublicDir = Join-Path -Path $savepath -ChildPath "Public"
+        $FunctionsToExport = Get-ChildItem -Path $PublicDir -Filter *.ps1 | ForEach-Object { $_.BaseName }
+
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
             FunctionsToExport    = 'Get-MSPAuthenticationContext'
@@ -41,9 +44,12 @@ function New-Manifest {
 
     if ($Reporting) {
         $savepath = "$workingdirectory\modules\MSP365.Reporting"
+        $PublicDir = Join-Path -Path $savepath -ChildPath "Public"
+        $FunctionsToExport = Get-ChildItem -Path $PublicDir -Filter *.ps1 | ForEach-Object { $_.BaseName }
+    
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = 'Get-MSPReport'
+            FunctionsToExport    = $FunctionsToExport
             Path                 = "$savepath\MSP365.Reporting.psd1"
             Author               = "Paul van Boerdonk"
             Description          = "Functions for Reporting Module"
@@ -59,9 +65,12 @@ function New-Manifest {
 
     if ($SAM) {
         $savepath = "$workingdirectory\modules\MSP365.SAM"
+        $PublicDir = Join-Path -Path $savepath -ChildPath "Public"
+        $FunctionsToExport = Get-ChildItem -Path $PublicDir -Filter *.ps1 | ForEach-Object { $_.BaseName }
+
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = 'Get-MSPSAMStatus'
+            FunctionsToExport    = $FunctionsToExport
             Path                 = "$savepath\MSP365.SAM.psd1"
             Author               = "Paul van Boerdonk"
             Description          = "Functions for SAM Module"
@@ -77,9 +86,12 @@ function New-Manifest {
 
     if ($MSP365) {
         $savepath = "$workingdirectory\modules\MSP365"
+        $PublicDir = Join-Path -Path $savepath -ChildPath "Public"
+        $FunctionsToExport = Get-ChildItem -Path $PublicDir -Filter *.ps1 | ForEach-Object { $_.BaseName }
+
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = 'Get-MSPCommand', 'Update-MSPModule'
+            FunctionsToExport    = $FunctionsToExport
             Path                 = "$savepath\MSP365.psd1"
             Author               = "Paul van Boerdonk"
             Description          = "Functions for MSP365 Module"
