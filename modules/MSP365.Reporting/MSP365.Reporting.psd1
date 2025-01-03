@@ -12,13 +12,13 @@
 RootModule = 'MSP365.Reporting.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.18'
+ModuleVersion = '1.0.19'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
 
 # ID used to uniquely identify this module
-GUID = 'cb657500-94f0-4595-999a-49e2b72d2ddf'
+GUID = '48df70e5-962e-40cc-af49-e5843d05a18b'
 
 # Author of this module
 Author = 'Paul van Boerdonk'

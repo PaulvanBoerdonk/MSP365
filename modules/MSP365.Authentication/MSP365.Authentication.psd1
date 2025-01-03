@@ -12,13 +12,13 @@
 RootModule = 'MSP365.Authentication.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.1'
+ModuleVersion = '1.0.2'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
 
 # ID used to uniquely identify this module
-GUID = '4fc70b5e-871c-4321-a753-d9b81da2fe05'
+GUID = 'ad24b01a-1e5c-4efb-b793-f29775c16465'
 
 # Author of this module
 Author = 'Paul van Boerdonk'
