@@ -12,13 +12,13 @@
 RootModule = 'MSP365.SAM.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.13'
+ModuleVersion = '1.0.14'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
 
 # ID used to uniquely identify this module
-GUID = '0c6a6844-b663-4d05-a2e1-bece323b0654'
+GUID = 'ab026ccd-b5d0-4821-b48c-a89e0b25e47c'
 
 # Author of this module
 Author = 'Paul van Boerdonk'
@@ -69,7 +69,7 @@ PowerShellVersion = '7.1'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Get-M365SAMStatus'
+FunctionsToExport = 'Get-MSPSAMStatus'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'

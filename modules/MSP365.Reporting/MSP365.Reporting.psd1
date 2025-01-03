@@ -12,13 +12,13 @@
 RootModule = 'MSP365.Reporting.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.17'
+ModuleVersion = '1.0.18'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
 
 # ID used to uniquely identify this module
-GUID = 'f99719b7-e663-4cc4-a466-f4c389a00457'
+GUID = 'cb657500-94f0-4595-999a-49e2b72d2ddf'
 
 # Author of this module
 Author = 'Paul van Boerdonk'
@@ -69,7 +69,7 @@ PowerShellVersion = '7.1'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Get-M365Report'
+FunctionsToExport = 'Get-MSPReport'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
