@@ -24,10 +24,15 @@ function Update-MSPModule {
 
     # Get all modules that start with MSP365.* and update them
     if ($All -and -not $ModuleName) {
-        $modules = Get-Module -ListAvailable | Where-Object { $_.Name -like "MSP365.*" }
+
+        # Get all modules that start with MSP365.*, group them by name and get the latest version
+        $modules = Get-Module -ListAvailable | Where-Object { $_.Name -like "MSP365.*" } | Group-Object -Property Name | ForEach-Object {
+            $_.Group | Sort-Object -Property Version -Descending | Select-Object -First 1
+        }
+        
         
         foreach ($module in $modules) {
-            $latestVersion = Find-Module -Name $module.Name | Sort-Object -Property Version -Descending | Select-Object -First 1
+            $latestVersion = Find-Module -Name $module.Name | Where-Object { $_.Author -eq "Paul van Boerdonk" }  | Sort-Object -Property Version -Descending | Select-Object -First 1
             if ($latestVersion.Version -gt $module.Version) {
                 Write-Host "Updating module $($module.Name) to version $($latestVersion.Version)"
                 Update-Module -Name $module.Name
@@ -38,7 +43,7 @@ function Update-MSPModule {
         }
 
         # Update the main module
-        $latestVersion = Find-Module -Name "MSP365" | Sort-Object -Property Version -Descending | Select-Object -First 1
+        $latestVersion = Find-Module -Name "MSP365" | Where-Object { $_.Author -eq "Paul van Boerdonk" } | Sort-Object -Property Version -Descending | Select-Object -First 1
 
         if ($latestVersion.Version -gt (Get-Module -Name "MSP365" -ListAvailable).Version) {
             Write-Host "Updating module MSP365 to version $($latestVersion.Version)"
@@ -54,10 +59,10 @@ function Update-MSPModule {
     # Check if -ModuleName is specified and update the module
     $module = Get-Module -Name $ModuleName -ListAvailable
     if ($module) {
-        $latestVersion = Find-Module -Name $ModuleName | Sort-Object -Property Version -Descending | Select-Object -First 1
+        $latestVersion = Find-Module -Name $ModuleName | Where-Object { $_.Author -eq "Paul van Boerdonk" } | Sort-Object -Property Version -Descending | Select-Object -First 1
         if ($latestVersion.Version -gt $module.Version) {
             Write-Host "Updating module $ModuleName to version $($latestVersion.Version)"
-            Update-Module -Name $ModuleName -AllowClobber -Scope CurrentUser
+            Update-Module -Name $ModuleName
         }
         else {
             Write-Host "Module $ModuleName is already up to date, version: $($module.Version)"
@@ -66,5 +71,4 @@ function Update-MSPModule {
     else {
         Write-Host "Module $ModuleName is not installed"
     }
-
 }

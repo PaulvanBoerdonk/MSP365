@@ -28,7 +28,7 @@ function New-Manifest {
 
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = 'Get-MSPAuthenticationContext'
+            FunctionsToExport    = $FunctionsToExport
             Path                 = "$savepath\MSP365.Authentication.psd1"
             Author               = "Paul van Boerdonk"
             Description          = "Functions for Authentication Module"
@@ -37,7 +37,11 @@ function New-Manifest {
             ModuleVersion        = "$script:AuthenticationGithubVersion"
             Powershellversion    = "7.1"
             ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
+            RequiredModules      = (
+                @{ ModuleName = "Microsoft.Graph.Authentication"; ModuleVersion = "2.25.0"; }
+            )
             RootModule           = "MSP365.Authentication.psm1"
+            
         }
         New-ModuleManifest @Params
     }
@@ -58,6 +62,9 @@ function New-Manifest {
             ModuleVersion        = "$script:ReportingGithubVersion"
             Powershellversion    = "7.1"
             ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
+            RequiredModules      = (
+                @{ ModuleName = "MSP365.Authentication"; ModuleVersion = $script:AuthenticationGithubVersion; }
+            )
             RootModule           = "MSP365.Reporting.psm1"
         }
         New-ModuleManifest @Params
@@ -79,6 +86,9 @@ function New-Manifest {
             ModuleVersion        = "$script:SAMGithubVersion"
             Powershellversion    = "7.1"
             ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
+            RequiredModules      = (
+                @{ ModuleName = "MSP365.Authentication"; ModuleVersion = $script:AuthenticationGithubVersion; }
+            )
             RootModule           = "MSP365.SAM.psm1"
         }
         New-ModuleManifest @Params
@@ -103,7 +113,8 @@ function New-Manifest {
             RequiredModules      = (
                 @{ ModuleName = "MSP365.Authentication"; ModuleVersion = $script:AuthenticationGithubVersion; },
                 @{ ModuleName = "MSP365.Reporting"; ModuleVersion = $script:ReportingGithubVersion; },
-                @{ ModuleName = "MSP365.SAM"; ModuleVersion = $script:SAMGithubVersion; }
+                @{ ModuleName = "MSP365.SAM"; ModuleVersion = $script:SAMGithubVersion; },
+                @{ ModuleName = "Microsoft.Graph.Authentication"; ModuleVersion = "2.25.0"; }
             )
             RootModule           = "MSP365.psm1"
         }
@@ -121,11 +132,14 @@ function Publish-Modules {
         @{ Name = "MSP365"; Path = "$workingdirectory/modules/MSP365"; ManifestSwitch = "-MSP365" }
     )
 
+    Install-Module -Name Microsoft.Graph.Authentication -Force -AllowClobber -Scope CurrentUser
+    Copy-Item $workingdirectory/modules/MSP365.Authentication -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Authentication/MSP365.Authentication.psm1 -Force -Global
+    Copy-Item $workingdirectory/modules/MSP365.Reporting -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Reporting/MSP365.Reporting.psm1 -Force -Global
+    Copy-Item $workingdirectory/modules/MSP365.SAM -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.SAM/MSP365.SAM.psm1 -Force -Global
+    Copy-Item $workingdirectory/modules/MSP365 -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365/MSP365.psm1 -Force -Global
+
     foreach ($module in $modules) {
         if ($module.ManifestSwitch -eq "-MSP365") {
-            Copy-Item $workingdirectory/modules/MSP365.Authentication -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Authentication/MSP365.Authentication.psm1 -Force -Global
-            Copy-Item $workingdirectory/modules/MSP365.Reporting -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Reporting/MSP365.Reporting.psm1 -Force -Global
-            Copy-Item $workingdirectory/modules/MSP365.SAM -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.SAM/MSP365.SAM.psm1 -Force -Global
             Start-Sleep -Seconds 30
         }
         $PSGalleryVersion = (Find-Module $module.Name -Repository PSGallery).version
@@ -133,9 +147,6 @@ function Publish-Modules {
         $step2 = $step.trimstart('- **')
         $step3 = ($step2).split('*')
         $GithubVersion = $step3 | Select-Object -First 1
-
-
-
 
         if ([version]$GithubVersion -gt [version]$PSGalleryVersion) {
             Invoke-Expression "New-Manifest $($module.ManifestSwitch)"
