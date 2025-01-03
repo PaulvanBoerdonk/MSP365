@@ -17,6 +17,8 @@ jobs:
           Import-Module PowerShellGet, PartnerCenter
 
       - name: Publish Module to PowerShell Gallery
+        env:
+          PS_GALLERY_KEY: ${{ secrets.PS_GALLERY_KEY }}
         shell: pwsh
         run: |
           $workingdirectory = (Get-Location).Path
@@ -24,8 +26,6 @@ jobs:
           Publish-Modules
 
       - name: Commit and push new files to GitHub
-        env:
-          PS_GALLERY_KEY: ${{ secrets.PS_GALLERY_KEY }}
         shell: pwsh
         run: |
           git config --global user.email "paul.boerdonk@icloud.com"
