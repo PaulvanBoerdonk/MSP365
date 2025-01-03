@@ -1,5 +1,6 @@
 function New-Manifest {
     param (
+        [Parameter(Mandatory = $false)][Switch]$Authentication,
         [Parameter(Mandatory = $false)][Switch]$MSP365,
         [Parameter(Mandatory = $false)][Switch]$Reporting,
         [Parameter(Mandatory = $false)][Switch]$SAM
@@ -16,14 +17,33 @@ function New-Manifest {
     }
     
     $script:MSP365GithubVersion = Get-GithubVersion "$workingdirectory/modules/MSP365/ChangeLog.md"
+    $script:AuthenticationGithubVersion = Get-GithubVersion "$workingdirectory/modules/MSP365.Authentication/ChangeLog.md"
     $script:ReportingGithubVersion = Get-GithubVersion "$workingdirectory/modules/MSP365.Reporting/ChangeLog.md"
     $script:SAMGithubVersion = Get-GithubVersion "$workingdirectory/modules/MSP365.SAM/ChangeLog.md"
+
+    if ($Authentication) {
+        $savepath = "$workingdirectory\modules\MSP365.Authentication"
+        $Params = @{
+            CompatiblePSEditions = "Desktop", "Core"
+            FunctionsToExport    = 'Get-MSPAuthenticationContext'
+            Path                 = "$savepath\MSP365.Authentication.psd1"
+            Author               = "Paul van Boerdonk"
+            Description          = "Functions for Authentication Module"
+            IconUri              = 'https://raw.githubusercontent.com/PaulvanBoerdonk/MSP365/master/images/MSP365.png'
+            LicenseUri           = 'https://github.com/PaulvanBoerdonk/MSP365/blob/main/LICENSE'
+            ModuleVersion        = "$script:AuthenticationGithubVersion"
+            Powershellversion    = "7.1"
+            ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
+            RootModule           = "MSP365.Authentication.psm1"
+        }
+        New-ModuleManifest @Params
+    }
 
     if ($Reporting) {
         $savepath = "$workingdirectory\modules\MSP365.Reporting"
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = 'Get-M365Report'
+            FunctionsToExport    = 'Get-MSPReport'
             Path                 = "$savepath\MSP365.Reporting.psd1"
             Author               = "Paul van Boerdonk"
             Description          = "Functions for Reporting Module"
@@ -41,7 +61,7 @@ function New-Manifest {
         $savepath = "$workingdirectory\modules\MSP365.SAM"
         $Params = @{
             CompatiblePSEditions = "Desktop", "Core"
-            FunctionsToExport    = 'Get-M365SAMStatus'
+            FunctionsToExport    = 'Get-MSPSAMStatus'
             Path                 = "$savepath\MSP365.SAM.psd1"
             Author               = "Paul van Boerdonk"
             Description          = "Functions for SAM Module"
@@ -69,6 +89,7 @@ function New-Manifest {
             Powershellversion    = "7.1"
             ProjectUri           = 'https://github.com/PaulvanBoerdonk/MSP365'
             RequiredModules      = (
+                @{ ModuleName = "MSP365.Authentication"; ModuleVersion = $script:AuthenticationGithubVersion; },
                 @{ ModuleName = "MSP365.Reporting"; ModuleVersion = $script:ReportingGithubVersion; },
                 @{ ModuleName = "MSP365.SAM"; ModuleVersion = $script:SAMGithubVersion; }
             )
@@ -82,6 +103,7 @@ function Publish-Modules {
     $ErrorActionPreference = 'Stop'
 
     $modules = @(
+        @{ Name = "MSP365.Authentication"; Path = "$workingdirectory/modules/MSP365.Authentication"; ManifestSwitch = "-Authentication" },
         @{ Name = "MSP365.Reporting"; Path = "$workingdirectory/modules/MSP365.Reporting"; ManifestSwitch = "-Reporting" },
         @{ Name = "MSP365.SAM"; Path = "$workingdirectory/modules/MSP365.SAM"; ManifestSwitch = "-SAM" },
         @{ Name = "MSP365"; Path = "$workingdirectory/modules/MSP365"; ManifestSwitch = "-MSP365" }
@@ -89,6 +111,7 @@ function Publish-Modules {
 
     foreach ($module in $modules) {
         if ($module.ManifestSwitch -eq "-MSP365") {
+            Copy-Item $workingdirectory/modules/MSP365.Authentication -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Authentication/MSP365.Authentication.psm1 -Force -Global
             Copy-Item $workingdirectory/modules/MSP365.Reporting -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.Reporting/MSP365.Reporting.psm1 -Force -Global
             Copy-Item $workingdirectory/modules/MSP365.SAM -Destination $env:ProgramFiles\WindowsPowerShell\Modules -Force -Recurse ; Import-Module $workingdirectory/modules/MSP365.SAM/MSP365.SAM.psm1 -Force -Global
             Start-Sleep -Seconds 30
